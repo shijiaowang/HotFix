@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 
 /**
  * Created by wangyang on 2017/7/10.
@@ -49,6 +50,22 @@ public class HotFixDirManager {
         return new File(getFixFile().getAbsolutePath(), context.getPackageName() + "_" + getCurrentVersionName(context));
     }
 
+
+    /**
+     *  //检查某一个版本的补丁是否存在
+     * @param checkName  补丁的全部名称 比如 version12.dex
+     * @param context
+     * @return 是否存在
+     */
+    public static boolean isExits(final String checkName, Context context){
+        File currentDir = getCurrentDir(context);
+        return currentDir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.equals(checkName);
+            }
+        }).length==1;
+    }
     /**
      * 删除之前的更新包
      * @param context
